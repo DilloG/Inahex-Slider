@@ -11,15 +11,16 @@ import logo from "./inahexLogo.png"
 class ImagePost extends Component {
 
   state = {
+    // duration:0,
+    // activeSlide2: 0,
     images: []
-  }
+}
 
-  componentDidMount(){
-    this.setState({isLoading:true});
-    fetch('http://admin.inahex.com/api/slider')
-    .then(response => response.json())
-    .then(json  =>
-      {
+componentDidMount(){
+  fetch('http://admin.inahex.com/api/slider')
+  .then(response => response.json())
+  .then(json  =>
+    {
       this.setState({
         images: json
       }
@@ -28,35 +29,51 @@ class ImagePost extends Component {
 )
 }
 
-  render() {
-    var settings = {
-      dots: true,
-      // autoplay: true,
-      // autoplaySpeed: 1000
-    };
+// onEnded = () => {
+//   this.slider.slickNext();
+//   this.slider.slickPlay();
+// }
+// onPlay = () => {
+//   this.slider.slickPause();
+// }
 
-    return (
-      <>
-        <Slider {...settings}>
-        {
-          this.state.images.map(images => {
-                    return(
-                     <div>
-                      <Posting type={images.type} src={images.image}/>
-                     </div>
-                   )
-                }
-          )
-        }
-        </Slider>
+// onDuration = (duration) => {
+//   console.log('onDuration', duration)
+// }
 
-        <div className="frameAtas">
-          <img src={logo} alt="Logo" className="logo"/>
-        </div>
-        <div className="frameBawah">
-        </div>
-      </>
-    );
+
+
+render() {
+
+  var settings = {
+    dots: true,
+    autoplay: true,
+    autoplaySpeed: 300000
+  };
+
+  return (
+    <>
+    <Slider ref={slider => (this.slider = slider)} {...settings}>
+    {
+      this.state.images.map(images => {
+        return(
+          <div>
+            <Posting key={images.id} type={images.type} src={images.image}/>
+          </div>
+        )
+      }
+    )
   }
+  </Slider>
+
+  <div className="frameAtas">
+  <img src={logo} alt="Logo" className="logo"/>
+  </div>
+
+  <div className="frameBawah">
+  </div>
+  </>
+);
+}
 }
 export default ImagePost;
